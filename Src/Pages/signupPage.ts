@@ -3,9 +3,9 @@ import { createSignUpData, createStepOneData, createStepTwoData, type SignUpForm
 
 export class SignupPage {
     readonly page: Page;
-    readonly selectOrganizationDropDown: Locator;
+    readonly selectOrganizationDropdown: Locator;
     readonly organizationOption: Locator;
-    readonly selectTitleDopDown: Locator;
+    readonly selectTitleDropdown: Locator;
     readonly legalFirstNameInput: Locator;
     readonly legalLastNameInput: Locator;
     readonly emailInput: Locator;
@@ -13,13 +13,13 @@ export class SignupPage {
     readonly nextButton: Locator;
     readonly genderSelection: Locator;
     readonly dateOfBirthDay: Locator;
-    readonly dateofBirhtMonth: Locator;
-    readonly dateofBirthYear: Locator;
+    readonly dateOfBirthMonth: Locator;
+    readonly dateOfBirthYear: Locator;
     readonly passwordInput: Locator;
     readonly confirmPasswordInput: Locator;
-    readonly termsAndConditonsCheckBox: Locator;
-    readonly creatAccountButton: Locator;
-    readonly accountCreateSuccessPopup: Locator
+    readonly termsAndConditionsCheckbox: Locator;
+    readonly createAccountButton: Locator;
+    readonly accountCreateSuccessPopup: Locator;
 
     private log(message: string): void {
         console.log(`[SignupPage] ${message}`);
@@ -27,9 +27,9 @@ export class SignupPage {
 
     constructor(page: Page) {
         this.page = page;
-        this.selectOrganizationDropDown = page.getByPlaceholder('Select an organization');
+        this.selectOrganizationDropdown = page.getByPlaceholder('Select an organization');
         this.organizationOption = page.getByText('Maissara Al-Rikabi');
-        this.selectTitleDopDown = page.getByPlaceholder('Select a title');
+        this.selectTitleDropdown = page.getByPlaceholder('Select a title');
         this.legalFirstNameInput = page.getByRole('textbox', { name: 'Legal First Name' });
         this.legalLastNameInput = page.getByRole('textbox', { name: 'Legal Last Name' });
         this.emailInput = page.getByRole('textbox', { name: 'Email' });
@@ -37,26 +37,26 @@ export class SignupPage {
         this.nextButton = page.getByRole('button', { name: 'Next' });
         this.genderSelection = page.getByRole('textbox', { name: 'Sex at Birth' });
         this.dateOfBirthDay = page.getByRole('textbox', { name: 'Day' });
-        this.dateofBirhtMonth = page.getByRole('textbox', { name: 'Month' });
-        this.dateofBirthYear = page.getByRole('textbox', { name: 'Year' });
+        this.dateOfBirthMonth = page.getByRole('textbox', { name: 'Month' });
+        this.dateOfBirthYear = page.getByRole('textbox', { name: 'Year' });
         this.passwordInput = page.getByPlaceholder('Password', { exact: true });
         this.confirmPasswordInput = page.getByPlaceholder('Confirm Password', { exact: true });
-        this.termsAndConditonsCheckBox = page.locator('[data-path="consent"]');
-        this.creatAccountButton = page.getByRole('button', { name: 'Create Account' });
+        this.termsAndConditionsCheckbox = page.locator('[data-path="consent"]');
+        this.createAccountButton = page.getByRole('button', { name: 'Create Account' });
         this.accountCreateSuccessPopup = page.getByText('Your account has been created');
     }
 
     async selectOrganization(organization: string): Promise<void> {
         this.log(`Selecting organization: ${organization}`);
-        await this.selectOrganizationDropDown.click();
-        await this.selectOrganizationDropDown.fill(organization);
+        await this.selectOrganizationDropdown.click();
+        await this.selectOrganizationDropdown.fill(organization);
         await this.page.getByText(organization, { exact: true }).click();
     }
 
     async selectTitle(title: string): Promise<void> {
         this.log(`Selecting title: ${title}`);
-        await this.selectTitleDopDown.click();
-        await this.selectTitleDopDown.fill(title);
+        await this.selectTitleDropdown.click();
+        await this.selectTitleDropdown.fill(title);
         await this.page.getByText(title, { exact: true }).click();
     }
 
@@ -64,7 +64,7 @@ export class SignupPage {
         const signUpStepOneData = createStepOneData(data);
         this.log(`Filling step 1 for ${signUpStepOneData.legalFirstName} ${signUpStepOneData.legalLastName} (${signUpStepOneData.email})`);
 
-        await expect(this.selectOrganizationDropDown).toBeVisible();
+        await expect(this.selectOrganizationDropdown).toBeVisible();
         await this.selectOrganization(signUpStepOneData.organization);
         await this.selectTitle(signUpStepOneData.title);
         await this.legalFirstNameInput.fill(signUpStepOneData.legalFirstName);
@@ -94,20 +94,20 @@ export class SignupPage {
     }
     async selectDobMonth(month: string): Promise<void> {
         this.log(`Selecting birth month: ${month}`);
-        await this.dateofBirhtMonth.click();
-        await this.dateofBirhtMonth.fill(month);
+        await this.dateOfBirthMonth.click();
+        await this.dateOfBirthMonth.fill(month);
         await this.page.getByText(month, { exact: true }).click();
     }
     async selectDobYear(year: string): Promise<void> {
         this.log(`Selecting birth year: ${year}`);
-        await this.dateofBirthYear.click();
-        await this.dateofBirthYear.fill(year);
+        await this.dateOfBirthYear.click();
+        await this.dateOfBirthYear.fill(year);
         await this.page.getByText(year, { exact: true }).click();
     }
     async createAccount(): Promise<void> {
         this.log('Submitting signup form');
-        await this.creatAccountButton.scrollIntoViewIfNeeded();
-        await this.creatAccountButton.click();
+        await this.createAccountButton.scrollIntoViewIfNeeded();
+        await this.createAccountButton.click();
     }
 
 
@@ -125,7 +125,7 @@ export class SignupPage {
 
         if (signUpStepTwoData.acceptTerms) {
             this.log('Accepting terms and conditions');
-            await this.termsAndConditonsCheckBox.check();
+            await this.termsAndConditionsCheckbox.check();
         }
 
         return signUpStepTwoData;
@@ -138,7 +138,7 @@ export class SignupPage {
         await this.continueToStepTwo();
         await this.fillStepTwo(signUpData.stepTwo);
         await this.createAccount();
-        await expect(this.accountCreateSuccessPopup).toBeVisible()
+        await expect(this.accountCreateSuccessPopup).toBeVisible();
         this.log('Account creation completed successfully');
         return signUpData;
     }

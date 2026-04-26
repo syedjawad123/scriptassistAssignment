@@ -1,11 +1,11 @@
-import { expect, type Locator, type Page } from '@playwright/test';;
+import { expect, type Locator, type Page } from '@playwright/test';
 
-export class loginPage {
+export class LoginPage {
     readonly page: Page;
     readonly signUpButton: Locator;
     readonly emailInputField: Locator;
     readonly passwordInputField: Locator;
-    readonly sigInButton: Locator;
+    readonly signInButton: Locator;
 
     private log(message: string): void {
         console.log(`[LoginPage] ${message}`);
@@ -16,27 +16,27 @@ export class loginPage {
         this.signUpButton = page.getByRole('link', { name: 'Sign Up' });
         this.emailInputField = page.getByRole('textbox', { name: 'Enter your email' });
         this.passwordInputField = page.getByRole('textbox', { name: 'Enter your password' });
-        this.sigInButton = page.getByRole('button', { name: 'Sign In' });
+        this.signInButton = page.getByRole('button', { name: 'Sign In' });
     }
 
-    async goto() {
-        const URL = process.env.BASE_URL
-        this.log(`Navigating to ${URL}`);
-        await this.page.goto(`${URL}`);
+    async goto(): Promise<void> {
+        const url = process.env.BASE_URL;
+        this.log(`Navigating to ${url}`);
+        await this.page.goto('');
         await this.page.waitForLoadState('domcontentloaded');
     }
 
-    async clickSingupbutton() {
+    async clickSignupButton(): Promise<void> {
         await expect(this.signUpButton).toBeVisible();
         this.log('Login page loaded, opening sign up flow');
         await this.signUpButton.click();
     }
 
-    async userlogin(email: string, password: string) {
+    async userLogin(email: string, password: string): Promise<void> {
         await this.page.waitForLoadState('domcontentloaded');
         await this.emailInputField.fill(email);
         await this.passwordInputField.fill(password);
-        await this.sigInButton.click();
+        await this.signInButton.click();
     }
 
 

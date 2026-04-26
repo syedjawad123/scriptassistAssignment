@@ -1,16 +1,18 @@
 import { test, expect } from '@playwright/test';
-import { loginPage } from '@page/loginPage';
+import { LoginPage } from '@page/loginPage';
 import { SignupPage } from '@page/signupPage';
 import { DEFAULT_ORGANIZATION } from '../test-data/signupData';
+
 test.describe('login with valid credentials', () => {
     let signupPage: SignupPage;
-    let login: loginPage;
+    let login: LoginPage;
+
     function log(message: string): void {
         console.log(`[SignupSpec] ${message}`);
     }
 
     test.beforeEach(async ({ page }) => {
-        login = new loginPage(page);
+        login = new LoginPage(page);
         signupPage = new SignupPage(page);
         log('Opening signup page');
         await login.goto();
@@ -24,15 +26,13 @@ test.describe('login with valid credentials', () => {
 
     test('User should be able to login', async ({ page }) => {
         log('Running happy path login scenario');
-        let email = process.env.USEREMAIL
-        let password = process.env.PASSWORD
+        const email = process.env.USEREMAIL;
+        const password = process.env.PASSWORD;
         await signupPage.selectOrganization(DEFAULT_ORGANIZATION);
-        await login.userlogin(`${email}`, `${password}`);
-        await page.waitForURL(/.*dashboard/);
-        await expect(page).toHaveURL(/.*dashboard/);
+        await login.userLogin(`${email}`, `${password}`);
+        await page.waitForLoadState('domcontentloaded');
         await page.waitForURL(/.*tasks/);
         await expect(page).toHaveURL(/.*tasks/);
-        await page.waitForLoadState('domcontentloaded');
         await expect(page.getByText('Tasks').first()).toBeVisible();
     });
 

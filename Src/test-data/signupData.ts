@@ -45,12 +45,12 @@ export function createStepOneData(overrides: Partial<SignUpStepOneData> = {}): S
 
 export function createStepTwoData(overrides: Partial<SignUpStepTwoData> = {}): SignUpStepTwoData {
   const password = overrides.password ?? 'ScriptAssist123!';
-
+  const dob = faker.date.birthdate({ min: 18, max: 65, mode: 'age' });
   return {
     gender: createGender(),
-    day: '10',
-    month: 'Apr',
-    year: '1995',
+    day: String(dob.getDate()).padStart(2, '0'),
+    month: dob.toLocaleString('en-GB', { month: 'short' }), // e.g. 'Apr'
+    year: String(dob.getFullYear()),
     password,
     confirmPassword: overrides.confirmPassword ?? password,
     acceptTerms: true,
