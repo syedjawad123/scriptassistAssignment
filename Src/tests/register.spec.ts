@@ -22,10 +22,8 @@ test.describe('Signup flow', () => {
     await page.waitForURL(/.*register/);
     await expect(page).toHaveURL(/.*register/);
   });
-
-  test.afterEach(async ({ page }) => {
-    log('Closing page after test');
-    await page.close();
+  test.afterEach(async ({ context }) => {
+    await context.close();
   });
 
   test('User should be successfully registered with valid data and should be able to login', async ({ page }) => {

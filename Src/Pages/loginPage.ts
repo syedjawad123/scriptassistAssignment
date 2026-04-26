@@ -1,4 +1,5 @@
 import { expect, type Locator, type Page } from '@playwright/test';
+import { waitForPageLoad } from '../utils/pageHelper';
 
 export class LoginPage {
     readonly page: Page;
@@ -20,10 +21,9 @@ export class LoginPage {
     }
 
     async goto(): Promise<void> {
-        const url = process.env.BASE_URL;
-        this.log(`Navigating to ${url}`);
+        this.log("Opening webpage")
         await this.page.goto('');
-        await this.page.waitForLoadState('domcontentloaded');
+        await waitForPageLoad(this.page, this.signUpButton)
     }
 
     async clickSignupButton(): Promise<void> {

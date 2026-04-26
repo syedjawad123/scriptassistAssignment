@@ -125,7 +125,9 @@ export class SignupPage {
 
         if (signUpStepTwoData.acceptTerms) {
             this.log('Accepting terms and conditions');
+            await this.termsAndConditionsCheckbox.scrollIntoViewIfNeeded();
             await this.termsAndConditionsCheckbox.check();
+            await expect.soft(this.termsAndConditionsCheckbox).toBeChecked()
         }
 
         return signUpStepTwoData;

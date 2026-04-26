@@ -19,10 +19,6 @@ test.describe('login with valid credentials', () => {
         await expect(page).toHaveURL(/.*login/);
     });
 
-    test.afterEach(async ({ page }) => {
-        log('Closing page after test');
-        await page.close();
-    });
 
     test('User should be able to login', async ({ page }) => {
         log('Running happy path login scenario');
